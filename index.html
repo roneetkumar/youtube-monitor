@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>Youtube Subscribers</h2>
+
+    SUBSCRIBERS: <h1 id="subs"></h1>
+    VIEWS: <h3 id="views"></h3>
+
+</body>
+
+<script>
+
+    let subscribers = {};
+    const websocket = new WebSocket("ws://localhost:8080/stats")
+
+    websocket.onopen = e => console.log("Successfully connected to websocket endpoint");
+
+    websocket.onerror = error => console.error(error)
+
+    websocket.onmessage = e => {
+        subscribers = JSON.parse(e.data);
+        console.log(subscribers);
+
+        document.getElementById("subs").innerText = subscribers.statistics.subscriberCount;
+        document.getElementById("views").innerText = subscribers.statistics.viewCount;
+
+    }
+
+</script>
+
+</html>
